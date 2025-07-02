@@ -1,13 +1,15 @@
-onvif-py3
-==========
+python-onvif
+============
 
-Python 3 fork of python-onvif: ONVIF Client Implementation in Python
+ONVIF Client Implementation in Python
 
 Dependencies
 ------------
-`suds-py3 <https://pypi.python.org/pypi/suds-p3>`_
+`Python 2.x` (For a Python 3 compatible fork, see https://github.com/FalkTannhaeuser/python-onvif-zeep)
 
-`suds-passworddigest-py3 <http://github.com/tgaugry/suds-passworddigest-py3>`_
+`suds <https://pypi.python.org/pypi/suds>`_ >= 0.4
+
+`suds-passworddigest <https://pypi.python.org/pypi/suds_passworddigest>`_
 
 Install python-onvif
 --------------------
@@ -15,17 +17,13 @@ Install python-onvif
 
 You should clone this repository and run setup.py::
 
-    cd onvif-py3 && pip install .
-
-Or if you want to make changes
-
-    cd onvif-py3 && pip install -e .
+    cd python-onvif && python setup.py install
 
 **From PyPI**
 
 ::
 
-    pip install onvif-py3
+    pip install onvif
 
 Getting Started
 ---------------
@@ -86,7 +84,7 @@ exception if you set an invalid (or non-existent) parameter.
     time_params = mycam.devicemgmt.create_type('SetSystemDateAndTime')
     time_params.DateTimeType = 'Manual'
     time_params.DaylightSavings = True
-    time_params.TimeZone = 'CST-8:00:00'
+    time_params.TimeZone.TZ = 'CST-8:00:00'
     time_params.UTCDateTime.Date.Year = 2014
     time_params.UTCDateTime.Date.Month = 12
     time_params.UTCDateTime.Date.Day = 3

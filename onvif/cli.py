@@ -1,37 +1,30 @@
 #!/usr/bin/python
 '''ONVIF Client Command Line Interface'''
 
-import os.path
 import re
-from argparse import REMAINDER, ArgumentError, ArgumentParser
-from ast import literal_eval
 from cmd import Cmd
+from ast import literal_eval
 from json import dumps
+from argparse import ArgumentParser, ArgumentError, REMAINDER
 
 from suds import MethodNotFound
 from suds.sax.text import Text
+from onvif import ONVIFCamera, ONVIFService, ONVIFError
+from definition import SERVICES
+import os.path
 
-from onvif import ONVIFCamera, ONVIFError, ONVIFService
-
-from .definition import SERVICES
-
-SUPPORTED_SERVICES = list(SERVICES.keys())
-
+SUPPORTED_SERVICES = SERVICES.keys()
 
 class ThrowingArgumentParser(ArgumentParser):
-
     def error(self, message):
         usage = self.format_usage()
         raise ValueError("%s\n%s" % (message, usage))
 
-
 def success(message):
-    print('True: ' + str(message))
-
+    print 'True: ' + str(message)
 
 def error(message):
-    print('False: ' + str(message))
-
+    print 'False: ' + str(message)
 
 class ONVIFCLI(Cmd):
     prompt = 'ONVIF >>> '
@@ -45,13 +38,14 @@ class ONVIFCLI(Cmd):
                                   args.user, args.password,
                                   args.wsdl, encrypt=args.encrypt)
 
+
         # Create cmd argument parser
         self.create_cmd_parser()
 
     def create_cmd_parser(self):
         # Create parser to parse CMD, `params` is optional.
         cmd_parser = ThrowingArgumentParser(prog='ONVIF CMD',
-                                            usage='CMD service operation [params]')
+                            usage='CMD service operation [params]')
         cmd_parser.add_argument('service')
         cmd_parser.add_argument('operation')
         cmd_parser.add_argument('params', default='{}', nargs=REMAINDER)
@@ -107,8 +101,8 @@ class ONVIFCLI(Cmd):
         if not text:
             completions = SUPPORTED_SERVICES[:]
         else:
-            completions = [key for key in SUPPORTED_SERVICES
-                           if key.startswith(text)]
+            completions = [ key for key in SUPPORTED_SERVICES
+                                if key.startswith(text) ]
         return completions
 
     def emptyline(self):
@@ -117,7 +111,6 @@ class ONVIFCLI(Cmd):
     def do_EOF(self, line):
         return True
 
-
 def create_parser():
     parser = ThrowingArgumentParser(description=__doc__)
     # Dealwith dependency for service, operation and params
@@ -125,7 +118,7 @@ def create_parser():
                         help='Service defined by ONVIF WSDL document')
     parser.add_argument('operation', nargs='?', default='',
                         help='Operation to be execute defined'
-                        ' by ONVIF WSDL document')
+                                          ' by ONVIF WSDL document')
     parser.add_argument('params', default='', nargs='?',
                         help='JSON format params passed to the operation.'
                              'E.g., "{"Name": "NewHostName"}"')
@@ -150,7 +143,6 @@ def create_parser():
 
     return parser
 
-
 def main():
     INTRO = __doc__
 
@@ -159,7 +151,7 @@ def main():
     try:
         args = parser.parse_args()
     except ValueError as err:
-        print(str(err))
+        print str(err)
         return
     # Also need parse configuration file.
 

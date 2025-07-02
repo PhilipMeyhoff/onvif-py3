@@ -1,6 +1,5 @@
 from onvif import ONVIFCamera
 
-
 def rotate_image_180():
     ''' Rotate the image '''
 
